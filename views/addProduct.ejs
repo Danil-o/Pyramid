@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>PYRAMID</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="/css/animate.css">
+
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/css/aos.css">
+
+    <link rel="stylesheet" href="/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/css/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="/css/flaticon.css">
+    <link rel="stylesheet" href="/css/icomoon.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <section class="ftco-section">
+        <div class="container">
+            <form action="/adminDashboard/addProduct" class="billing-form" method="post" enctype="multipart/form-data">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 ftco-animate">
+                        <h3 class="mb-4 billing-heading">اضافه کردن محصول</h3>
+                        <div class="row align-items-end">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="productName">نام محصول</label>
+                                    <input name="productName" id="productName" type="text" class="form-control"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="productPrice">قیمت</label>
+                                    <input type="number" name="productPrice" id="productPrice" class="form-control"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="mb-3">
+                                        <label for="productImg" class="form-label">عکس خود را انتخاب کنید</label>
+                                        <input class="form-control" type="file" id="productImg" name="productImg">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="productCategory" style="direction:rtl;text-align:right;">دسته
+                                        بندی</label>
+                                    <select name="productCategory" required>
+                                        <option value="" selected>انتخاب کنید</option>
+                                        <option value="sofa">مبل</option>
+                                        <option value="desk">میز</option>
+                                        <option value="lamp">لامپ</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button style="width: 100px;" class="btn btn-primary">ثبت</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <% if(success.length) {%>
+        <script>
+            Swal.fire({
+                position: 'top',
+                icon: '<%= ICON %>',
+                text: '<%= TEXT %>',
+                width: 400,
+                showConfirmButton: false,
+                timer: 1900
+            })
+        </script>
+        <% } %>
+            <% if(error.length) {%>
+                <script>
+                    Swal.fire({
+                        position: 'top',
+                        icon: '<%= ICON %>',
+                        text: '<%= TEXT %>',
+                        width: 400,
+                        showConfirmButton: false,
+                        timer: 1900
+                    })
+                </script>
+                <% } %>
+
+                    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+                            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4"
+                                stroke="#eeeeee" />
+                            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4"
+                                stroke-miterlimit="10" stroke="#F96D00" />
+                        </svg></div>
+                    <script src="/js/jquery.min.js"></script>
+                    <script src="/js/jquery-migrate-3.0.1.min.js"></script>
+                    <script src="/js/popper.min.js"></script>
+                    <script src="/js/bootstrap.min.js"></script>
+                    <script src="/js/jquery.easing.1.3.js"></script>
+                    <script src="/js/jquery.waypoints.min.js"></script>
+                    <script src="/js/jquery.stellar.min.js"></script>
+                    <script src="/js/owl.carousel.min.js"></script>
+                    <script src="/js/jquery.magnific-popup.min.js"></script>
+                    <script src="/js/aos.js"></script>
+                    <script src="/js/jquery.animateNumber.min.js"></script>
+                    <script src="/js/bootstrap-datepicker.js"></script>
+                    <script src="/js/scrollax.min.js"></script>
+                    <script src="/js/google-map.js"></script>
+                    <script src="/js/main.js"></script>
+
+</body>
+
+</html>

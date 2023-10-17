@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/userDashboard.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+</head>
+
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="/image/photo_2023-02-17_15-32-17.jpg" alt="">
+            </div>
+
+            <span class="logo_name"></span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li>
+                    <button class="tabs__button" style="border: none; background-color: Transparent;">
+                        <a>
+                            <i class="uil uil-user"></i>
+                            <span class="link-name">Your information</span>
+                        </a>
+                    </button>
+                </li>
+                <li>
+                    <button class="tabs__button" style="border: none; background-color: Transparent;">
+                        <a>
+                            <i class="uil uil-shopping-cart-alt"></i>
+                            <span class="link-name">Your Order</span>
+                        </a>
+                    </button>
+                </li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li>
+                    <a>
+                        <form action="/logout" method="post" style="display: inline;">
+                            <button style="border: none; background-color: Transparent;">
+                                <span class="link-name">Logout</span>
+                                <i style="display: inline;" class="uil uil-signout"></i>
+                            </button>
+                        </form>
+                    </a>
+                </li>
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark mode</span>
+                    </a>
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here...">
+            </div>
+
+            <img src="image/shafiee.jpg" alt="">
+        </div>
+
+        <div class="dash-content" id="active">
+            <br><br>
+            <% let i=0 %>
+                <% for(let checkout of completeUser.checkout) { %>
+                    <% i++ %>
+                        <h1 dir="rtl">
+                            <%= i %> اطلاعات سفارش شما
+                        </h1>
+                        <form action="" dir="rtl">
+                            <label for="username">نام کاربری</label>
+                            <input type="text" id="username" name="username" value="<%= completeUser.username %>"
+                                readonly>
+                            <label for="email">ایمیل</label>
+                            <input type="email" id="email" name="email" value="<%= completeUser.email %>" readonly>
+                            <label for="fistname">نام</label>
+                            <input type="text" id="fistname" name="fistname" value="<%= checkout.firstname %>" readonly>
+                            <label for="lastname">نام خانوادگی</label>
+                            <input type="text" id="lastname" name="lastname" value="<%= checkout.lastname %>" readonly>
+                            <label for="city">شهر</label>
+                            <input type="text" id="city" name="city" value="<%= checkout.city %>" readonly>
+                            <label for="phone">شماره تلفن</label>
+                            <input type="number" id="phone" name="phone" value="<%= checkout.phone %>" readonly>
+                            <label for="address">آدرس</label>
+                            <textarea name="address" id="address" class="" cols="10" rows="2" readonly>
+                        <%= checkout.address %>
+                    </textarea>
+                        </form>
+                        <% }; %>
+        </div>
+
+        <div class="dash-content" dir="rtl">
+            <% for (let i=0; i < products.length; i++) { %>
+                <table align="center" dir="rtl">
+                    <h1>
+                        <% h=i+1 %>
+                            <%= h %> اطلاعات سفارش ما
+                    </h1>
+                    <% for (let j=0; j < products[i].length; j++) { %>
+                        <thead dir="rtl">
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                                <th>محصول</th>
+                                <th>قیمت </th>
+                                <th>تعداد</th>
+                                <th>مبلغ پرداخت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#"><span></span></a>
+                                </td>
+                                <td>
+                                    <div>
+                                        <img width="100px" src="<%= products[i][j].img %>" alt="">
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <h3 style="font-family: irsans;">
+                                        <%= products[i][j].name %>
+                                    </h3>
+                                </td>
+
+                                <td>
+                                    <h3 style="font-family: irsans;">
+                                        <%= products[i][j].price %>
+                                    </h3>
+                                </td>
+
+                                <td>
+                                    <div>
+                                        <h3 style="font-family: irsans;">
+                                            <%= products[i][j].qty %>
+                                        </h3>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div>
+                                        <h3 style="font-family: irsans;">
+                                            <%= products[i][j].total %>
+                                        </h3>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                        <% } %>
+                </table>
+        </div>
+    </section>
+
+
+
+
+    <script src="/js/userDashboard.js"></script>
+
+</body>
+
+</html>

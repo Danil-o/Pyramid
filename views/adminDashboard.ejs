@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Admin Dashboard</title>
+
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+  <!-- Montserrat Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/adminDashboard.css">
+</head>
+
+<body dir="rtl">
+  <div class="grid-container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="menu-icon" onclick="openSidebar()">
+        <span class="material-icons-outlined">menu</span>
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div class="sidebar-title">
+        <div class="sidebar-brand">
+          <span class="material-icons-outlined">inventory</span>
+        </div>
+        <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+      </div>
+
+      <ul class="sidebar-list">
+        <li class="sidebar-list-item">
+          <button class="btn" style="border: none; background-color: Transparent; color: #9799ab;">
+            <i class="uil uil-analytics"></i>
+            <a>آنالیز فروشگاه</a>
+          </button>
+        </li>
+        <li class="sidebar-list-item">
+          <button class="btn" style="border: none; background-color: Transparent; color: #9799ab;">
+            <i class="uil uil-store"></i>
+            <a>محصولات</a>
+          </button>
+        </li>
+        <li class="sidebar-list-item">
+          <button class="btn" style="border: none; background-color: Transparent; color: #9799ab;">
+            <i class="uil uil-shopping-cart-alt"></i>
+            <a>سفارشات</a>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <!-- End Sidebar -->
+
+    <!-- Main -->
+    <div class="main-container hide" id="active">
+      <div class="main-title">
+        <p class="font-weight-bold">آنالیز فروشگاه</p>
+      </div>
+
+      <div class="main-cards">
+
+        <div class="card">
+          <div class="card-inner">
+            <p class="text-primary">محصولات</p>
+            <span class="material-icons-outlined text-blue">inventory_2</span>
+          </div>
+          <span class="text-primary font-weight-bold">
+            <%= products.length %>
+          </span>
+        </div>
+
+        <div class="card">
+          <div class="card-inner">
+            <p class="text-primary">سفارشات</p>
+            <span class="material-icons-outlined text-orange">add_shopping_cart</span>
+          </div>
+          <span class="text-primary font-weight-bold">
+            <%= checkoutData.length %>
+          </span>
+        </div>
+      </div>
+
+      <div class="charts">
+
+        <div class="charts-card">
+          <p class="chart-title"> کالای برتر &nbsp;<strong>5</strong></p>
+          <div id="bar-chart"></div>
+        </div>
+
+        <div class="charts-card">
+          <p class="chart-title">نمودار فروش</p>
+          <div id="area-chart"></div>
+        </div>
+
+      </div>
+    </div>
+    <!-- End Main -->
+
+
+    <div class="main-container hide">
+      <% if(products.length) {%>
+        <a href="/adminDashboard/addProduct" class="btn btn-primary">اضافه کردن محصول</a>
+        <br><br>
+
+        <table class="table table-striped">
+
+          <thead>
+            <tr class="home">
+              <th>نام</th>
+              <th>قیمت</th>
+              <th>دسته بندی</th>
+              <th>عکس</th>
+              <th>ویرایش</th>
+              <th>حذف</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(let product of products) {%>
+              <tr>
+                <td>
+                  <%= product.name %>
+                </td>
+                <td>
+                  <%= product.price %>
+                </td>
+                <td>
+                  <%= product.category %>
+                </td>
+                <td class="image-prod">
+                  <div class="img">
+                    <img
+                      style="display: block;width: 100px;height: 150px;margin: 0 auto;position: relative;left: 137px;"
+                      src="<%= product.img.url %>" alt="">
+                  </div>
+                </td>
+                <td>
+                  <a style="text-decoration: none; color: black;"
+                    href="/adminDashboard/editProduct/<%= product._id %>">ویرایش</a>
+                </td>
+                <td>
+                  <form action="/adminDashboard/deleteProduct/<%= product._id %>?_method=DELETE" method="post">
+                    <button type="submit" style="border: none; background-color: transparent;">حذف</button>
+                  </form>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+        <% } else {%>
+          <h2 class="text-center">محصولی وجود ندارد</h2>
+          <a href="/adminDashboard/addProduct" class="btn btn-primary">اضافه کردن محصول</a>
+          <% } %>
+    </div>
+    <div class="main-container hide">
+      <% if(checkoutData.length) {%>
+        <table class="table table-striped">
+          <thead>
+            <tr class="home">
+              <th>شماره سفارش</th>
+              <th>وضعیت</th>
+              <th>نام</th>
+              <th>کد پستی</th>
+              <th>آدرس</th>
+              <th>شماره تلفن</th>
+              <th>تاریخ سفارش</th>
+              <th>محصولات</th>
+              <th>قیمت پرداختی</th>
+              <th>حذف</th>
+              <th>تنظیم وضعیت</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i=0; i < checkoutData.length; i++) { %>
+              <tr>
+                <td>
+                  <%= checkoutData[i].OrderNum %>
+                </td>
+                <td>
+                  <% if(checkoutData[i].status===true) {%>تحویل داده شده<% } else {%>تحویل داده نشده<% } %>
+                </td>
+                <td>
+                  <%= checkoutData[i].firstname %>
+                    <%= checkoutData[i].lastname %>
+                </td>
+                <td>
+                  <%= checkoutData[i].postcode %>
+                </td>
+                <td>
+                  <%= checkoutData[i].city %>
+                    <%= checkoutData[i].address %>
+                </td>
+                <td>
+                  <%= checkoutData[i].phone %>
+                </td>
+                <td>
+                  <%= checkoutData[i].date %>
+                </td>
+                <td>
+                  <% for (let j=0; j < checkoutData[i].products.length; j++) { %>
+                    <%= checkoutData[i].products[j].name %> ,
+                      <% } %>
+                </td>
+                <td>
+                  <% for (let f=0; f < checkoutData[i].items.length; f++) { %>
+                    <%= checkoutData[i].items[f].total %> ,
+                      <% } %>
+                </td>
+                <td>
+                  <form action="/adminDashboard/deleteCheckout/<%= checkoutData[i]._id %>?_method=DELETE" method="post">
+                    <button type="submit" style="border: none; background-color: transparent;">حذف</button>
+                  </form>
+                </td>
+                <td>
+                  <form action="/adminDashboard/delivered/<%= checkoutData[i]._id %>" method="post">
+                    <button type="submit" style="border: none; background-color: transparent;">تحویل داده شد</button>
+                  </form>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+        <% } else {%>
+          <h2 class="text-center">سفارشی وجود ندارد</h2>
+          <% } %>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <% if(success.length) {%>
+    <script>
+      Swal.fire({
+        position: 'top',
+        icon: '<%= ICON %>',
+        text: '<%= TEXT %>',
+        width: 400,
+        showConfirmButton: false,
+        timer: 1900
+      })
+    </script>
+    <% } %>
+      <% if(error.length) {%>
+        <script>
+          Swal.fire({
+            position: 'top',
+            icon: '<%= ICON %>',
+            text: '<%= TEXT %>',
+            width: 400,
+            showConfirmButton: false,
+            timer: 1900
+          })
+        </script>
+        <% } %>
+
+          <script src="/js/adminDashboard.js"></script>
+
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+
+          <script>
+            // SIDEBAR TOGGLE
+
+            var sidebarOpen = false;
+            var sidebar = document.getElementById("sidebar");
+
+            function openSidebar() {
+              if (!sidebarOpen) {
+                sidebar.classList.add("sidebar-responsive");
+                sidebarOpen = true;
+              }
+            }
+
+            function closeSidebar() {
+              if (sidebarOpen) {
+                sidebar.classList.remove("sidebar-responsive");
+                sidebarOpen = false;
+              }
+            }
+
+
+
+            // ---------- CHARTS ----------
+
+            var firstDate = parseInt('<%= salesQtyArray[0] %>');
+            var secondDate = parseInt('<%= salesQtyArray[1] %>');
+            var thirdDate = parseInt('<%= salesQtyArray[2] %>');
+            var fourthDate = parseInt('<%= salesQtyArray[3] %>');
+            var fifthDate = parseInt('<%= salesQtyArray[4] %>');
+
+            var firstName = '<%= salesNameArray[0] %>';
+            var secondName = '<%= salesNameArray[1] %>';
+            var thirdName = '<%= salesNameArray[2] %>';
+            var fourthName = '<%= salesNameArray[3] %>';
+            var fifthName = '<%= salesNameArray[4] %>';
+
+
+            // BAR CHART
+            var barChartOptions = {
+              series: [{
+                name: 'کالای برتر',
+                data: [firstDate, secondDate, thirdDate, fourthDate, fifthDate]
+              }],
+              chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: {
+                  show: false
+                },
+              },
+              colors: [
+                "#246dec",
+                "#cc3c43",
+                "#367952",
+                "#f5b74f",
+                "#4f35a1"
+              ],
+              plotOptions: {
+                bar: {
+                  distributed: true,
+                  borderRadius: 4,
+                  horizontal: false,
+                  columnWidth: '40%',
+                }
+              },
+              dataLabels: {
+                enabled: false
+              },
+              legend: {
+                show: false
+              },
+              xaxis: {
+                categories: [firstName, secondName, thirdName, fourthName, fifthName],
+              },
+              yaxis: {
+                title: {
+                  text: "اعداد"
+                }
+              }
+            };
+
+            var barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
+            barChart.render();
+
+            var Month1 = parseInt('<%= grandTotal1 %>')
+            var Month2 = parseInt('<%= grandTotal2 %>')
+            var Month3 = parseInt('<%= grandTotal3 %>')
+            var Month4 = parseInt('<%= grandTotal4 %>')
+            var Month5 = parseInt('<%= grandTotal5 %>')
+            var Month6 = parseInt('<%= grandTotal6 %>')
+            var Month7 = parseInt('<%= grandTotal7 %>')
+            var Month8 = parseInt('<%= grandTotal8 %>')
+            var Month9 = parseInt('<%= grandTotal9 %>')
+            var Month10 = parseInt('<%= grandTotal10 %>')
+            var Month11 = parseInt('<%= grandTotal11 %>')
+            var Month12 = parseInt('<%= grandTotal12 %>')
+
+            // AREA CHART
+            var areaChartOptions = {
+              series: [{
+                name: 'نمودار سفارش',
+                data: [Month1, Month2, Month3, Month4, Month5, Month6, Month7, Month8, Month9, Month10, Month11, Month12]
+              }
+              ],
+              chart: {
+                height: 350,
+                type: 'area',
+                toolbar: {
+                  show: false,
+                },
+              },
+              colors: ["#4f35a1", "#246dec"],
+              dataLabels: {
+                enabled: false,
+              },
+              stroke: {
+                curve: 'smooth'
+              },
+              labels: ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"],
+              markers: {
+                size: 0
+              },
+              yaxis: [
+                {
+                  title: {
+                    text: 'اعداد',
+                  },
+                }
+              ],
+              tooltip: {
+                shared: true,
+                intersect: false,
+              }
+            };
+
+            var areaChart = new ApexCharts(document.querySelector("#area-chart"), areaChartOptions);
+            areaChart.render();
+          </script>
+          <!-- ApexCharts -->
+          <!-- Custom JS -->
+</body>
+
+</html>

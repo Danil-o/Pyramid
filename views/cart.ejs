@@ -1,0 +1,188 @@
+<%- include('./partials/header') %>
+
+	<% if(carts.length) {%>
+		<div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
+			<div class="container">
+				<div class="row no-gutters slider-text align-items-center justify-content-center">
+					<div class="col-md-9 ftco-animate text-center">
+						<!-- <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p> -->
+						<h1 style="font-family: irsans;" class="mb-0 bread">سبد خرید</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<section class="ftco-section ftco-cart">
+			<h1></h1>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 ftco-animate">
+						<div class="cart-list">
+							<table class="table">
+								<thead class="thead-primary">
+									<tr class="text-center">
+										<th>&nbsp;</th>
+										<th>&nbsp;</th>
+										<th>محصول</th>
+										<th>قیمت </th>
+										<th>تعداد</th>
+										<th>مبلغ پرداخت</th>
+									</tr>
+								</thead>
+								<% for(let cart of carts) {%>
+									<tbody id="tbody">
+										<tr class="text-center">
+											<td class="product-remove"><a href="#"><span
+														class="ion-ios-close"></span></a>
+											</td>
+
+											<td class="image-prod">
+												<div class="img">
+													<img src="<%= cart.img %>" alt="">
+												</div>
+											</td>
+
+											<td class="product-name">
+												<h3 style="font-family: irsans;">
+													<%= cart.name %>
+												</h3>
+											</td>
+
+											<td class="price">
+												<h3 class="cartprice" style="font-family: irsans;">
+													<%= cart.price %>
+												</h3>
+											</td>
+
+											<td class="quantity">
+												<div class="input-group mb-3">
+													<h3 class="cartqty" style="font-family: irsans;">
+														<%= cart.qty %>
+													</h3>
+												</div>
+												<a href="/cart/update/<%= cart.id %>?action=add">+</a>
+												<a href="/cart/update/<%= cart.id %>?action=remove">-</a>
+												<a href="/cart/update/<%= cart.id %>?action=clear">Clear</a>
+											</td>
+
+											<td class="total">
+												<h3 class="cartpricemulcartqty" style="font-family: irsans;">
+													<%= cart.qtymultiplyprice %>
+												</h3>
+											</td>
+										</tr>
+									</tbody>
+									<% } %>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-start">
+					<div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
+						<div class="cart-total mb-3">
+							<h3>مبلغ پرداخت</h3>
+							<p class="d-flex">
+								<span>محصولات</span>
+								<span id="allProductPrice"></span>
+							</p>
+							<p class="d-flex">
+								<span>ارسال</span>
+								<span id="postCost">50</span>
+							</p>
+							<p class="d-flex">
+								<span>تخفیف</span>
+								<span id="offer">20</span>
+							</p>
+							<hr>
+							<p class="d-flex total-price">
+								<span>مبلغ پرداخت</span>
+								<span id="allOfAmount"></span>
+							</p>
+						</div>
+						<p class="text-center"><a href="/checkout" class="btn btn-primary py-3 px-4">پردازش خرید</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		<% } else {%>
+			<div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
+				<div class="container">
+					<div class="row no-gutters slider-text align-items-center justify-content-center">
+						<div class="col-md-9 ftco-animate text-center">
+							<!-- <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p> -->
+							<h1 style="font-family: irsans;" class="mb-0 bread">سبد خرید شما خالی است</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			<% } %>
+
+
+
+				<script>
+
+					const price = document.getElementsByClassName('cartprice');
+					const qty = document.getElementsByClassName('cartqty');
+					const total = document.getElementsByClassName('cartpricemulcartqty');
+
+					let allProductPriceForCode = 0;
+					for (let i = 0; i < price.length; i++) {
+						const result = price[i].innerHTML * qty[i].innerHTML;
+
+						total[i].innerHTML = result;
+						allProductPriceForCode += result;
+					}
+
+					const allProductPrice = document.getElementById('allProductPrice');
+					allProductPrice.innerHTML = allProductPriceForCode;
+
+					const postCostForCode = parseInt(document.getElementById('postCost').innerHTML);
+					const offerForCode = parseInt(document.getElementById('offer').innerHTML);
+
+					const allOfAmountForCode = document.getElementById('allOfAmount');
+
+					console.log(allOfAmountForCode);
+
+					allOfAmountForCode.innerHTML = allProductPriceForCode + postCostForCode - offerForCode;
+
+					$(document).ready(function () {
+
+						var quantitiy = 0;
+						$('.quantity-right-plus').click(function (e) {
+
+							// Stop acting like a button
+							e.preventDefault();
+							// Get the field name
+							var quantity = parseInt($('#quantity').val());
+
+							// If is not undefined
+
+							$('#quantity').val(quantity + 1);
+
+
+							// Increment
+
+						});
+
+						$('.quantity-left-minus').click(function (e) {
+							// Stop acting like a button
+							e.preventDefault();
+							// Get the field name
+							var quantity = parseInt($('#quantity').val());
+
+							// If is not undefined
+
+							// Increment
+							if (quantity > 0) {
+								$('#quantity').val(quantity - 1);
+							}
+						});
+
+					});
+				</script>
+
+
+
+
+				<%- include('./partials/footer') %>
